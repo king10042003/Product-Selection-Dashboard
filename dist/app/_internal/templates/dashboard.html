@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Selection Dashboard</title>
+  <!-- Link to your external CSS file located in static/style.css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <!-- Include jQuery for convenience -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div class="paper">
+    <h1>Product Selection Dashboard</h1>
+
+    <!-- File Upload Form -->
+    <form action="/" method="POST" enctype="multipart/form-data">
+      <input type="file" name="file" required>
+      <button type="submit" class="btn-primary" onclick="localStorage.removeItem('selectedItems');">Upload CSV</button>
+    </form>
+
+    <!-- Sample CSV Download Link -->
+    <a href="{{ url_for('download_sample') }}" class="btn-secondary" download>Download Sample CSV</a>
+
+    <hr>
+
+    <!-- Product List -->
+    <ul class="card-list">
+      {% for item in data %}
+      <li class="paper border shadow shadow-large shadow-hover">
+        <input type="checkbox" class="select-item" data-item="{{ item['Item Code'] }}"
+          {% if item['Item Code'] in selected_items %}checked{% endif %}>
+        <img src="{{ item['IMAGE'] }}" alt="Product Image" onerror="this.onerror=null; this.src='https://via.placeholder.com/150';">
+        <h2>Item Code: {{ item['Item Code'] }}</h2>
+        <p>Lot: {{ item['Lot Number'] }}</p>
+        <p>Unit Weight: {{ item['Unit Weight'] }}</p>
+        <p>Complexity: {{ item['Complexity Code'] }}</p>
+        <p>Group: {{ item['Product Group'] }}</p>
+        <p>Stock Value: {{ item['Stock Value'] }}</p>
+        <p>Category: {{ item['Product Category Description'] }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <hr>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+      {% if current_page > 1 %}
+        <a href="{{ url_for('dashboard', page=current_page-1) }}" class="btn-secondary">Previous</a>
+      {% endif %}
+      <span>Page {{ current_page }} of {{ total_pages }}</span>
+      {% if current_page < total_pages %}
+        <a href="{{ url_for('dashboard', page=current_page+1) }}" class="btn-primary">Next</a>
+      {% endif %}
+    </div>
+
+    <hr>
+
+    <!-- Download Selected Button -->
+    <button id="downloadSelected" class="btn-primary">Download Selected Products</button>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Restore saved selections from localStorage (if any)
+      let selectedItems = new Set(JSON.parse(localStorage.getItem("selectedItems")) || []);
+
+      // For each checkbox, check if its data-item value is in the saved set
+      document.querySelectorAll(".select-item").forEach((checkbox) => {
+        const itemCode = checkbox.getAttribute("data-item");
+        if (selectedItems.has(itemCode)) {
+          checkbox.checked = true;
+        }
+        checkbox.addEventListener("change", function () {
+          if (this.checked) {
+            selectedItems.add(itemCode);
+          } else {
+            selectedItems.delete(itemCode);
+          }
+          // Save updated selection in localStorage
+          localStorage.setItem("selectedItems", JSON.stringify([...selectedItems]));
+
+          // Send selection to backend via AJAX
+          fetch("{{ url_for('save_selection') }}", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ selected: [...selectedItems] })
+          }).then(response => response.json())
+            .then(data => console.log("Selection saved:", data.message))
+            .catch(err => console.error(err));
+        });
+      });
+
+      // Handle Download Selected button click
+      document.getElementById("downloadSelected").addEventListener("click", function () {
+        window.location.href = "{{ url_for('download_selected') }}";
+      });
+
+      // Apply hover blur effect using JS (if needed)
+      const cardList = document.querySelector(".card-list");
+      const listItems = document.querySelectorAll(".card-list li");
+      listItems.forEach((item) => {
+        item.addEventListener("mouseover", function () {
+          cardList.classList.add("hover-active");
+          item.classList.add("hovered");
+        });
+        item.addEventListener("mouseleave", function () {
+          cardList.classList.remove("hover-active");
+          item.classList.remove("hovered");
+        });
+      });
+    });
+  </script>
+</body>
+</html>
