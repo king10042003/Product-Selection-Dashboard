@@ -11,13 +11,18 @@
 </head>
 <body>
   <div class="paper">
-    <h1>Product Selection Dashboard</h1>
+    <h1>Product Selection Dashboard</h1><div class="right-panel">
+      <h2>Selected Products</h2>
+      <p id="selected-count">0</p>
+    </div>
+    
 
     <!-- File Upload Form -->
     <form action="/" method="POST" enctype="multipart/form-data">
       <input type="file" name="file" required>
       <button type="submit" class="btn-primary" onclick="localStorage.removeItem('selectedItems');">Upload CSV</button>
     </form>
+    
 
     <!-- Sample CSV Download Link -->
     <a href="{{ url_for('download_sample') }}" class="btn-secondary" download>Download Sample CSV</a>
@@ -65,7 +70,12 @@
     document.addEventListener("DOMContentLoaded", function () {
       // Restore saved selections from localStorage (if any)
       let selectedItems = new Set(JSON.parse(localStorage.getItem("selectedItems")) || []);
-
+      function updateCount(count) {
+        document.getElementById('selected-count').innerText = count;
+      }
+      // Update the count on page load
+      updateCount(selectedItems.size);
+  
       // For each checkbox, check if its data-item value is in the saved set
       document.querySelectorAll(".select-item").forEach((checkbox) => {
         const itemCode = checkbox.getAttribute("data-item");
@@ -78,25 +88,37 @@
           } else {
             selectedItems.delete(itemCode);
           }
+  
           // Save updated selection in localStorage
           localStorage.setItem("selectedItems", JSON.stringify([...selectedItems]));
-
+  
           // Send selection to backend via AJAX
           fetch("{{ url_for('save_selection') }}", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ selected: [...selectedItems] })
-          }).then(response => response.json())
-            .then(data => console.log("Selection saved:", data.message))
-            .catch(err => console.error(err));
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log("Selection saved:", data.message);
+            // Check if selectedCount is present in response and update the count
+            if (data.selectedCount) {
+              updateCount(data.selectedCount);
+            }
+          })
+          .catch(err => {
+            console.error("Error in saving selection:", err);
+          });
         });
       });
-
+  
+      // Function to update selected cou
+  
       // Handle Download Selected button click
       document.getElementById("downloadSelected").addEventListener("click", function () {
         window.location.href = "{{ url_for('download_selected') }}";
       });
-
+  
       // Apply hover blur effect using JS (if needed)
       const cardList = document.querySelector(".card-list");
       const listItems = document.querySelectorAll(".card-list li");

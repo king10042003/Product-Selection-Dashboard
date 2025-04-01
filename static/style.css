@@ -75,3 +75,11 @@ li a {
   filter: blur(4px);
   transition: filter 0.2s ease-in-out;
 }
+.right-panel {
+  margin-left: auto; 
+  width: 20%;
+  border: 2px solid #0c0707;
+  padding: 2px;
+  text-align: center;
+  font-size: medium;
+}

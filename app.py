@@ -66,7 +66,7 @@ def dashboard():
 
     # Pagination parameters
     page = int(request.args.get("page", 1))
-    per_page = 20
+    per_page = 21
 
     df = pd.read_csv(file_path, dtype=str)
     # Re-calculate IMAGE URL (in case it is missing)
@@ -93,8 +93,9 @@ def save_selection():
     try:
         selected_items = request.json.get("selected", [])
         session["selected_items"] = selected_items
+        selected_count= len(selected_items)
         session.modified = True
-        return jsonify({"message": "Selection saved successfully"})
+        return jsonify({"message": "Selection saved successfully","selectedCount": selected_count})
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
