@@ -12,37 +12,37 @@
 <body>
   <div class="paper">
     <h1>Product Selection Dashboard</h1>
-    
-    <div class="right-panel">
-      <h2>Selected Products</h2>
-      <p id="selected-count">0</p>
+  
+    <div class="dashboard-header flex justify-between items-center">
+      <div id="filter-section" class="p-4">
+        <label for="column-select">Choose Column:</label>
+        <select id="column-select" onchange="loadFilterOptions()"></select>
+  
+        <label for="value-select" class="mt-2 block">Choose Value:</label>
+        <select id="value-select" multiple size="6" onchange="applyFilter()"></select>
+  
+        <button onclick="clearFilter()" class="btn-secondary mt-2">Clear Filter</button>
+      </div>
+  
+      <div class="right-panel text-center bg-gray-100 p-4 rounded-lg shadow">
+        <h2>Selected Products</h2>
+        <p id="selected-count" class="text-2xl font-bold text-blue-600">0</p>
+      </div>
     </div>
-
-    <div id="filter-section" class="p-4">
-      <label for="column-select">Choose Column:</label>
-      <select id="column-select" onchange="loadFilterOptions()">
-        <!-- Populated dynamically -->
-      </select>
-    
-      <label for="value-select">Choose Value:</label>
-      <select id="value-select"  multiple size="6" onchange="applyFilter()">
-        <!-- Populated dynamically -->
-      </select>
-      <button onclick="clearFilter()" class="btn-secondary mt-2">Clear Filter</button>
-    </div>
-    
-
+  
+    <hr class="my-4">
+  
     <!-- File Upload Form -->
-    <form action="/" method="POST" enctype="multipart/form-data">
-      <input type="file" name="file" required>
+    <form action="/" method="POST" enctype="multipart/form-data" class="mb-4">
+      <label class="block mb-2">Upload CSV File:</label>
+      <input type="file" name="file" required class="mb-2">
       <button type="submit" class="btn-primary" onclick="localStorage.removeItem('selectedItems');">Upload CSV</button>
     </form>
-    
-
-    <!-- Sample CSV Download Link -->
-    <a href="{{ url_for('download_sample') }}" class="btn-secondary" download>Download Sample CSV</a>
-
-    <hr>
+  
+    <!-- Sample CSV Download -->
+    <a href="{{ url_for('download_sample') }}" class="btn-secondary inline-block mb-4" download>📥 Download Sample CSV</a>
+  
+  </div>
 
     <!-- Product List -->
     <ul class="card-list">
