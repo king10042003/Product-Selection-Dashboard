@@ -68,38 +68,41 @@ def dashboard():
     page = int(request.args.get("page", 1))
     per_page = 21
 
-    
-
-
+    # Read CSV into DataFrame
     df = pd.read_csv(file_path, dtype=str)
 
+    # Filter parameters from request
     filter_col = request.args.get("filter_col")
     filter_val = request.args.get("filter_val")  # This will be a comma-separated string
     if filter_col and filter_val:
         filter_col = filter_col.strip()
         filter_values = [val.strip() for val in filter_val.split(",")]
         if filter_col in df.columns:
-            df = df[df[filter_col].isin(filter_values)]
+            df = df[df[filter_col].isin(filter_values)]  # Apply the filter
         else:
             print(f"Column '{filter_col}' not found in dataframe")
-    
 
-    
     # Re-calculate IMAGE URL (in case it is missing)
     if "Item Code" in df.columns:
         df["IMAGE"] = df["Item Code"].apply(
             lambda x: f"https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName={x[2:9]}.jpg"
         )
+
     total_pages = (len(df) + per_page - 1) // per_page
     paginated_data = df.iloc[(page - 1) * per_page: page * per_page].to_dict(orient="records")
 
     # Retrieve previously selected items (list of Item Codes)
     selected_items = session.get("selected_items", [])
+
+    # Get available columns for filtering (excluding 'IMAGE' and 'Sno.')
     column_data = [col for col in df.columns if col not in ["IMAGE", "Sno."]]
 
-    return render_template("dashboard.html", data=paginated_data, total_pages=total_pages, current_page=page, selected_items=selected_items,column_data=column_data)
-
-# Route: Download Sample CSV
+    return render_template("dashboard.html", 
+                           data=paginated_data, 
+                           total_pages=total_pages, 
+                           current_page=page, 
+                           selected_items=selected_items,
+                           column_data=column_data)
 @app.route("/download_sample")
 def download_sample():
     return send_file(SAMPLE_CSV_PATH, as_attachment=True)
@@ -142,12 +145,22 @@ def get_unique_values():
     if not file_path or not column:
         return jsonify({"values": []})
 
-    df = pd.read_csv(file_path, dtype=str)
+    # Check if file exists
+    if not os.path.exists(file_path):
+        return jsonify({"error": "File not found"}), 400
+
+    try:
+        df = pd.read_csv(file_path, dtype=str)
+    except Exception as e:
+        return jsonify({"error": f"Error reading CSV: {str(e)}"}), 500
+
     if column in df.columns:
         unique_vals = df[column].dropna().unique().tolist()
+        print(f"Unique values for {column}: {unique_vals}")  # Debugging line
         return jsonify({"values": unique_vals})
     else:
         return jsonify({"values": []})
+
 
 if __name__ == "__main__":
     app.run(debug=True)
