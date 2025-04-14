@@ -1,13 +1,7 @@
-Item Code,Lot Number,Unit Weight,Complexity Code,Product Group,Stock Value,Product Category Description,IMAGE,Unnamed: 8
-51W3BHDKYABA00,T434EDB,56,High,Rings,10000,Gold Jewelry,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHDKY.jpg,'Image')
-51W3BHDLCABA00,T434EDO,39.52,High,Rings,10000,Gold Jewelry,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHDLC.jpg,
-51W3BHDLDABA00,T434EMU,39.72,High,Rings,10000,Gold Jewelry,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHDLD.jpg,
-51W3BHDNIABA00,T557EIO,46.64,High,Rings,10000,Gold Jewelry,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHDNI.jpg,
-51W3BHDQNABA00,T557EIQ,46.62,High,Rings,10000,Gold Jewelry,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHDQN.jpg,
-51W3BHDQSABA00,T559EFT,38.5,High,Rings,10000,Gold Jewelry,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHDQS.jpg,
-51W3BHDQVABA00,T561ECT,47.21,High,Rings,10000,Gold Jewelry,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHDQV.jpg,
-51W3BHDQYABA00,W1D12FO,54.61,High,Rings,10000,Gold Jewelry,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHDQY.jpg,
-51W3BHDRWABA00,W1D1EBO,26.41,High,Rings,10000,Gold Jewelry,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHDRW.jpg,
-51W3BHNKK1AA00,W2BH2LD,57.02,High,Rings,10000,Gold Jewelry,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHNKK.jpg,
-51W3BHNKL1AA00,W2BH2LD,57.02,High,Rings,10000,Gold Jewelry,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHNKL.jpg,
-51W3BHNKQ1AA00,W2BH2LD,57.02,High,Rings,10000,Gold Jewelry,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHNKQ.jpg,
+Item Code,Lot Number,Unit Weight,Complexity Code,Product Group,Stock Value,Product Category Description,IMAGE
+51W2A1VLSR1A00,2OBOR132526,40.132,PKI,BANGLES,10000,WEST 1,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W2A1VLS.jpg
+51W2PTVLZR2A00,2EB000043,40.16,PBH,BANGLES,10000,WEST 1,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W2PTVLZ.jpg
+51D2D1VIFR4A00,2EA000193,40.338,PBH,BANGLES,10000,WEST 2,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=D2D1VIF.jpg
+512218VJSS4B00,2EB000044,40.589,PBH,BANGLES,10000,WEST 3,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=2218VJS.jpg
+51D3B4VBJR2A00,2EA000028,40.649,PKI,BANGLES,10000,WEST 3,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=D3B4VBJ.jpg
+51W2A1VTUR2A00,2EA000070,41.061,PKI,BANGLES,10000,WEST 2,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W2A1VTU.jpg

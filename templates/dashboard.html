@@ -17,6 +17,19 @@
       <h2>Selected Products</h2>
       <p id="selected-count">0</p>
     </div>
+
+    <div id="filter-section" class="p-4">
+      <label for="column-select">Choose Column:</label>
+      <select id="column-select" onchange="loadFilterOptions()">
+        <!-- Populated dynamically -->
+      </select>
+    
+      <label for="value-select">Choose Value:</label>
+      <select id="value-select"  multiple size="6" onchange="applyFilter()">
+        <!-- Populated dynamically -->
+      </select>
+      <button onclick="clearFilter()" class="btn-secondary mt-2">Clear Filter</button>
+    </div>
     
 
     <!-- File Upload Form -->
@@ -54,11 +67,11 @@
     <!-- Pagination Controls -->
     <div class="pagination">
       {% if current_page > 1 %}
-        <a href="{{ url_for('dashboard', page=current_page-1) }}" class="btn-secondary">Previous</a>
+        <a href="{{ url_for('dashboard', page=current_page-1,filter_col=request.args.get('filter_col'), filter_val=request.args.get('filter_val')) }}" class="btn-secondary">Previous</a>
       {% endif %}
       <span>Page {{ current_page }} of {{ total_pages }}</span>
       {% if current_page < total_pages %}
-        <a href="{{ url_for('dashboard', page=current_page+1) }}" class="btn-primary">Next</a>
+        <a href="{{ url_for('dashboard', page=current_page+1, filter_col=request.args.get('filter_col'), filter_val=request.args.get('filter_val')) }}" class="btn-primary">Next</a>
       {% endif %}
     </div>
 
@@ -69,6 +82,13 @@
   </div>
 
   <script>
+    // Injected from Flask (make sure this is above DOMContentLoaded)
+    const columnData = JSON.parse('{{ column_data | tojson | safe }}');
+    console.log("Available Columns:", columnData)
+
+
+
+    let col 
     document.addEventListener("DOMContentLoaded", function () {
       // Restore saved selections from localStorage (if any)
       let selectedItems = new Set(JSON.parse(localStorage.getItem("selectedItems")) || []);
@@ -134,7 +154,55 @@
           item.classList.remove("hovered");
         });
       });
+
+      // Populate column dropdown
+      const columnDropdown = document.getElementById("column-select");
+      if (columnDropdown && columnData.length) {
+        columnData.forEach(col => {
+          const option = document.createElement("option");
+          option.value = col;
+          option.textContent = col;
+          columnDropdown.appendChild(option);
+        });
+      }
     });
+
+    // Load unique values for selected column
+    function loadFilterOptions() {
+      const selectedColumn = document.getElementById("column-select").value;
+      if (!selectedColumn) return;
+      fetch(`/get_unique_values?column=${encodeURIComponent(selectedColumn)}`)
+        .then(response => response.json())
+        .then(data => {
+          const valueSelect = document.getElementById("value-select");
+          valueSelect.innerHTML = ""; // Clear previous options
+
+          data.values.forEach(value => {
+            const option = document.createElement("option");
+            option.value = value;
+            option.textContent = value;
+            valueSelect.appendChild(option);
+          });
+        })
+        .catch(error => {
+          console.error("Error fetching unique values:", error);
+        });
+    }
+
+    // Redirect to apply filter
+    function applyFilter() {
+      const selectedColumn = document.getElementById("column-select").value;
+      const selectedOptions = Array.from(document.getElementById("value-select").selectedOptions);
+      const selectedValues = selectedOptions.map((opt) => opt.value);
+      if (!selectedColumn || selectedValues.length === 0) return;
+
+      const filterParam = encodeURIComponent(selectedValues.join(","));
+      window.location.href = `/dashboard?page=1&filter_col=${encodeURIComponent(selectedColumn)}&filter_val=${filterParam}`;
+    }
+    // Clear the filter
+    function clearFilter() {
+      window.location.href = "/dashboard";
+    }
   </script>
 </body>
 </html>

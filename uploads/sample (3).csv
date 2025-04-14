@@ -1,0 +1,2 @@
+Item Code,Lot Number,Unit Weight,Complexity Code,Product Group,Stock Value,Product Category Description,IMAGE
+1001,15.5,High,Rings,10000,Gold Jewelry,=HYPERLINK('https://example.com/image.jpg',https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=01.jpg

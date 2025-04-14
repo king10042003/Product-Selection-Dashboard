@@ -68,7 +68,23 @@ def dashboard():
     page = int(request.args.get("page", 1))
     per_page = 21
 
+    
+
+
     df = pd.read_csv(file_path, dtype=str)
+
+    filter_col = request.args.get("filter_col")
+    filter_val = request.args.get("filter_val")  # This will be a comma-separated string
+    if filter_col and filter_val:
+        filter_col = filter_col.strip()
+        filter_values = [val.strip() for val in filter_val.split(",")]
+        if filter_col in df.columns:
+            df = df[df[filter_col].isin(filter_values)]
+        else:
+            print(f"Column '{filter_col}' not found in dataframe")
+    
+
+    
     # Re-calculate IMAGE URL (in case it is missing)
     if "Item Code" in df.columns:
         df["IMAGE"] = df["Item Code"].apply(
@@ -79,8 +95,9 @@ def dashboard():
 
     # Retrieve previously selected items (list of Item Codes)
     selected_items = session.get("selected_items", [])
+    column_data = [col for col in df.columns if col not in ["IMAGE", "Sno."]]
 
-    return render_template("dashboard.html", data=paginated_data, total_pages=total_pages, current_page=page, selected_items=selected_items)
+    return render_template("dashboard.html", data=paginated_data, total_pages=total_pages, current_page=page, selected_items=selected_items,column_data=column_data)
 
 # Route: Download Sample CSV
 @app.route("/download_sample")
@@ -116,6 +133,21 @@ def download_selected():
     selected_df = df[df["Item Code"].isin(selected_items)]
     selected_df.to_csv(SELECTED_CSV_PATH, index=False)
     return send_file(SELECTED_CSV_PATH, as_attachment=True)
+
+@app.route("/get_unique_values")
+def get_unique_values():
+    file_path = session.get("uploaded_file")
+    column = request.args.get("column")
+
+    if not file_path or not column:
+        return jsonify({"values": []})
+
+    df = pd.read_csv(file_path, dtype=str)
+    if column in df.columns:
+        unique_vals = df[column].dropna().unique().tolist()
+        return jsonify({"values": unique_vals})
+    else:
+        return jsonify({"values": []})
 
 if __name__ == "__main__":
     app.run(debug=True)
