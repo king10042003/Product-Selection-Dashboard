@@ -357,20 +357,27 @@
     }
 
     function updateAGSummary() {
-      const checkboxes = document.querySelectorAll('.select-item');
+      const selectedItems = new Set(JSON.parse(localStorage.getItem("selectedItems")) || []);
       const agCount = {};
+      let totalSelected = 0;  // Variable to hold the total count of selected items
 
-      checkboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-          const listItem = checkbox.closest('li');
+      selectedItems.forEach((itemCode) => {
+        // Try to find the card element for this itemCode on the page
+        const item = document.querySelector(`[data-item="${itemCode}"]`);
+        if (item) {
+          const listItem = item.closest('li');
           if (listItem && listItem.dataset.ag) {
             const agValue = listItem.dataset.ag;
             agCount[agValue] = (agCount[agValue] || 0) + 1;
+            totalSelected++;  // Increment total for each selected item
           }
+        } else {
+          // Optionally store unknown AGs (if not in current DOM, maybe fetch from server if needed)
+          agCount["Other Pages"] = (agCount["Other Pages"] || 0) + 1;
+          totalSelected++;  // Increment total for these items
         }
       });
 
-      // Update summary table
       const summaryTable = document.getElementById('ag-summary-table');
       if (!summaryTable) return;
       
@@ -378,7 +385,7 @@
 
       for (const ag in agCount) {
         const row = document.createElement('tr');
-        
+
         const agCell = document.createElement('td');
         agCell.textContent = ag;
         row.appendChild(agCell);
@@ -389,7 +396,20 @@
 
         summaryTable.appendChild(row);
       }
-      
+
+      // Show the total count of selected items at the bottom
+      const totalRow = document.createElement('tr');
+      const totalCell = document.createElement('td');
+      totalCell.colSpan = 1;
+      totalCell.textContent = "Total Selected Items:";
+      totalRow.appendChild(totalCell);
+
+      const totalCountCell = document.createElement('td');
+      totalCountCell.textContent = totalSelected;
+      totalRow.appendChild(totalCountCell);
+
+      summaryTable.appendChild(totalRow);
+
       // If no selections, show message
       if (Object.keys(agCount).length === 0) {
         const row = document.createElement('tr');
@@ -401,6 +421,8 @@
         summaryTable.appendChild(row);
       }
     }
+
+
 
     // Call updateAGSummary on page load
     updateAGSummary();
