@@ -103,6 +103,10 @@ def dashboard():
                            current_page=page, 
                            selected_items=selected_items,
                            column_data=column_data)
+
+
+
+
 @app.route("/download_sample")
 def download_sample():
     return send_file(SAMPLE_CSV_PATH, as_attachment=True)
