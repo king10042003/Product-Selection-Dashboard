@@ -21,14 +21,18 @@
         </select>
   
         <div id="filter-options-container" class="mt-2">
-          <input type="text" id="filter-search" placeholder="Search values..." class="mb-2" oninput="filterValueOptions()">
-          <div id="filter-options" style="max-height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 5px;">
+          <input type="text" id="filter-search" placeholder="Search for options..." oninput="filterValueOptions()" />
+
+        
+          <div id="filter-options" style="max-height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 5px; border-radius: 4px;">
             <!-- Checkboxes will be dynamically inserted here -->
           </div>
+        
           <button id="apply-filter" onclick="applyFilter()" class="btn-primary mt-2" disabled>Apply Filter</button>
+          <button type="button" class="btn-secondary mt-2" onclick="uncheckAllFilters()">Clear All</button>
+          
           <button onclick="clearFilter()" class="btn-secondary mt-2">Clear Filter</button>
         </div>
-      </div>
   
       <div class="right-panel">
         <h2>Selected Products</h2>
@@ -86,83 +90,68 @@
   </div>
 
   <script>
-    // Injected from Flask (make sure this is above DOMContentLoaded)
+    // Injected from Flask
     const columnData = JSON.parse('{{ column_data | tojson | safe }}');
-    console.log("Available Columns:", columnData)
-
-
+    console.log("Available Columns:", columnData);
+  
     document.addEventListener("DOMContentLoaded", function () {
-      // Restore saved selections from localStorage (if any)
-      let selectedItems = new Set(JSON.parse(localStorage.getItem("selectedItems")) || []);
+      const selectedItems = new Set(JSON.parse(localStorage.getItem("selectedItems")) || []);
       const applyButton = document.getElementById("apply-filter");
       const columnDropdown = document.getElementById("column-select");
-
-      if (applyButton) applyButton.disabled = true; // Initially disable
+      const filterOptionsContainer = document.getElementById("filter-options");
+      const filterSearch = document.getElementById("filter-search");
+      const downloadBtn = document.getElementById("downloadSelected");
+      const selectedCountEl = document.getElementById('selected-count');
+  
+      if (applyButton) applyButton.disabled = true;
+  
+      // Populate column dropdown
       if (columnDropdown) {
-        // Populate column dropdown
         columnData.forEach(col => {
           const option = document.createElement("option");
           option.value = col;
           option.textContent = col;
           columnDropdown.appendChild(option);
         });
-
         columnDropdown.addEventListener("change", loadFilterOptions);
       }
-
-      function updateCount(count) {
-        document.getElementById('selected-count').innerText = count;
-      }
-      // Update the count on page load
-      updateCount(selectedItems.size);
   
-      // For each checkbox, check if its data-item value is in the saved set
+      // Restore checkbox state and count
+      updateCount(selectedItems.size);
       document.querySelectorAll(".select-item").forEach((checkbox) => {
         const itemCode = checkbox.getAttribute("data-item");
-        if (selectedItems.has(itemCode)) {
-          checkbox.checked = true;
-        }
+        if (selectedItems.has(itemCode)) checkbox.checked = true;
+  
         checkbox.addEventListener("change", function () {
           if (this.checked) {
             selectedItems.add(itemCode);
           } else {
             selectedItems.delete(itemCode);
           }
-  
-          // Save updated selection in localStorage
           localStorage.setItem("selectedItems", JSON.stringify([...selectedItems]));
   
-          // Send selection to backend via AJAX
           fetch("{{ url_for('save_selection') }}", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ selected: [...selectedItems] })
           })
-          .then(response => response.json())
-          .then(data => {
-            console.log("Selection saved:", data.message);
-            // Check if selectedCount is present in response and update the count
-            if (data.selectedCount) {
-              updateCount(data.selectedCount);
-            }
-          })
-          .catch(err => {
-            console.error("Error in saving selection:", err);
-          });
+            .then(res => res.json())
+            .then(data => {
+              console.log("Selection saved:", data.message);
+              if (data.selectedCount) updateCount(data.selectedCount);
+            })
+            .catch(err => console.error("Error saving selection:", err));
         });
       });
   
-      // Function to update selected cou
-  
-      // Handle Download Selected button click
-      const downloadBtn = document.getElementById("downloadSelected");
+      // Download Selected Button
       if (downloadBtn) {
         downloadBtn.addEventListener("click", function () {
           window.location.href = "{{ url_for('download_selected') }}";
         });
       }
   
-      // Apply hover blur effect using JS (if needed)
+      // Hover Blur Effect
       const cardList = document.querySelector(".card-list");
       const listItems = document.querySelectorAll(".card-list li");
       listItems.forEach((item) => {
@@ -175,95 +164,101 @@
           item.classList.remove("hovered");
         });
       });
-    });
-
-      // Function to load filter options based on selected column
-        // Function to load filter options based on selected column
+  
+      // Filter Search
+      if (filterSearch) {
+        filterSearch.addEventListener("input", filterValueOptions);
+      }
+  
+      // Load initial column filter options
       function loadFilterOptions() {
-        const selectedColumn = document.getElementById("column-select").value;
+        const selectedColumn = columnDropdown.value;
         if (!selectedColumn) return;
-
-        console.log("Fetching unique values for column:", selectedColumn);  // Debugging line
-
+  
+        console.log("Fetching unique values for column:", selectedColumn);
+  
         fetch(`/get_unique_values?column=${encodeURIComponent(selectedColumn)}`)
-          .then(response => response.json())
+          .then(res => res.json())
           .then(data => {
-            console.log("Received unique values:", data);  // Debugging line
-
-            // Clear the filter options and checkboxes container
-            const filterOptionsContainer = document.getElementById("filter-options");
-            filterOptionsContainer.innerHTML = ""; // Clear existing checkboxes
-
+            filterOptionsContainer.innerHTML = "";
+  
             if (data.values.length > 0) {
-              // Generate checkboxes for each unique value
-              data.values.forEach(value => {
-                const checkboxWrapper = document.createElement("div");
-                checkboxWrapper.classList.add("checkbox-wrapper");
-
+              data.values.forEach((value, i) => {
+                const wrapper = document.createElement("div");
+                wrapper.className = 'checkbox-wrapper';
+  
                 const checkbox = document.createElement("input");
                 checkbox.type = "checkbox";
+                checkbox.id = `filter-val-${i}`;
                 checkbox.value = value;
-                checkbox.id = "filter-" + value; // Unique ID for each checkbox
                 checkbox.name = selectedColumn;
-
-                // Add event listener to enable/disable "Apply Filter" button
                 checkbox.addEventListener("change", toggleApplyFilterButton);
-
+  
                 const label = document.createElement("label");
-                label.setAttribute("for", checkbox.id);
+                label.htmlFor = checkbox.id;
                 label.textContent = value;
-
-                checkboxWrapper.appendChild(checkbox);
-                checkboxWrapper.appendChild(label);
-                filterOptionsContainer.appendChild(checkboxWrapper);
+  
+                wrapper.appendChild(checkbox);
+                wrapper.appendChild(label);
+                filterOptionsContainer.appendChild(wrapper);
               });
             } else {
               console.log("No values found for the selected column.");
             }
           })
-          .catch(error => {
-            console.error("Error fetching unique values:", error);
-          });
+          .catch(err => console.error("Error fetching unique values:", err));
       }
-
-      // Function to toggle the "Apply Filter" button based on checkbox selection
+  
       function toggleApplyFilterButton() {
-        const applyButton = document.getElementById("apply-filter");
-        const checkboxes = document.querySelectorAll("#filter-options input[type='checkbox']");
-        const isAnyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
-        
-        // Enable the "Apply Filter" button if at least one checkbox is checked
-        applyButton.disabled = !isAnyChecked;
+        const checkboxes = filterOptionsContainer.querySelectorAll("input[type='checkbox']");
+        const isAnyChecked = Array.from(checkboxes).some(cb => cb.checked);
+        if (applyButton) applyButton.disabled = !isAnyChecked;
       }
+  
       function filterValueOptions() {
-        const searchQuery = document.getElementById("filter-search").value.toLowerCase();
-        const valueSelect = document.getElementById("value-select");
-        const options = valueSelect.getElementsByTagName("option");
+        const searchText = document.getElementById('filter-search').value.trim().toLowerCase();
+        const wrappers = document.querySelectorAll('#filter-options .checkbox-wrapper');
 
-        for (let option of options) {
-          const text = option.textContent || option.innerText;
-          option.style.display = text.toLowerCase().includes(searchQuery) ? "" : "none";
-        }
+        wrappers.forEach(wrapper => {
+          const label = wrapper.querySelector('label');
+          const labelText = label.textContent.trim().toLowerCase();
+
+          // Check if the searchText is included in the labelText
+          if (labelText.includes(searchText)) {
+            wrapper.style.display = 'flex'; // Show the option
+          } else {
+            wrapper.style.display = 'none'; // Hide the option
+          }
+        });
       }
 
-      function applyFilter() {
-        const selectedColumn = document.getElementById("column-select").value;
-        const selectedOptions = Array.from(document.getElementById("filter-options").querySelectorAll('input[type="checkbox"]:checked'));
-        const selectedValues = selectedOptions.map(opt => opt.value);
-
+  
+      // Expose apply and clear filter functions globally
+      window.applyFilter = function () {
+        const selectedColumn = columnDropdown.value;
+        const selectedValues = Array.from(
+          filterOptionsContainer.querySelectorAll("input[type='checkbox']:checked")
+        ).map(cb => cb.value);
+  
         if (!selectedColumn || selectedValues.length === 0) return;
-
-        // Build the filter parameters to send to the backend
+  
         const filterParam = encodeURIComponent(selectedValues.join(","));
-        
-        // Update the URL with filter parameters and reload the page to fetch filtered data
         window.location.href = `/dashboard?page=1&filter_col=${encodeURIComponent(selectedColumn)}&filter_val=${filterParam}`;
       }
-
-
-    function clearFilter() {
-      window.location.href = "/dashboard";
-    }
+  
+      window.clearFilter = function () {
+        window.location.href = "/dashboard";
+      }
+  
+      function updateCount(count) {
+        if (selectedCountEl) selectedCountEl.innerText = count;
+      }
+      function uncheckAllFilters() {
+        document.querySelectorAll('#filter-options input[type="checkbox"]').forEach(cb => cb.checked = false);
+        toggleApplyFilterButton();
+      }
+    });
   </script>
+  
 </body>
 </html>

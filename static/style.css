@@ -164,6 +164,6 @@ a.btn-secondary {
 .checkbox-wrapper {
   display: flex;
   align-items: center;
-  gap: 8px; /* space between checkbox and label */
+  gap: 6px;
   margin-bottom: 5px;
 }
