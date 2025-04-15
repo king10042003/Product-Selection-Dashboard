@@ -25,12 +25,12 @@ h2 {
   margin: 0;
 }
 
-.card-list {    
+.card-list {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
   margin: 0;
-  padding: 3.5rem;
+  padding: 2rem; /* Fixed the extra space */
 }
 
 .card-list li input[type="checkbox"] {
@@ -40,12 +40,12 @@ h2 {
 }
 
 li {
-  margin: 0;
+  margin: 10px;
   transition: all 150ms ease-in-out;
   border: 1px solid;
   padding: 1rem;
-  margin: 10px;
 }
+
 
 li::before {
   content: "";
@@ -125,8 +125,11 @@ li a {
   font-weight: bold;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 1rem;
+  margin: 2rem auto;
+  display: block; /* <-- This centers it with auto margin */
 }
+
+
 .btn-primary:hover {
   background-color: #005fa3;
 }
@@ -167,3 +170,41 @@ a.btn-secondary {
   gap: 6px;
   margin-bottom: 5px;
 }
+
+
+@media (max-width: 768px) {
+  .card-list {
+    padding: 1rem;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 480px) {
+  .card-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+li:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.page-info {
+  font-weight: bold;
+  color: #333;
+}
+

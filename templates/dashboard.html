@@ -40,17 +40,19 @@
     </div>
     
   
-    <hr class="my-4">
+    
   
     <form action="/" method="POST" enctype="multipart/form-data" class="mb-4">
       <label class="block mb-2">Upload CSV File:</label>
       <input type="file" name="file" required class="mb-2">
       <button type="submit" class="btn-primary" onclick="localStorage.removeItem('selectedItems');">Upload CSV</button>
+      <a href="{{ url_for('download_sample') }}" class="btn-secondary inline-block mb-4" download>
+        📥 Download Sample CSV
+      </a>
     </form>
   
-    <a href="{{ url_for('download_sample') }}" class="btn-secondary inline-block mb-4" download>
-      📥 Download Sample CSV
-    </a>
+      
+    <hr class="my-4" style="width: 50%; margin: 2rem auto;">
   
     <!-- Product List -->
     <ul class="card-list">
@@ -72,21 +74,35 @@
   
     <hr>
   
-    <!-- Pagination Controls -->
-    <div class="pagination">
-      {% if current_page > 1 %}
-        <a href="{{ url_for('dashboard', page=current_page-1, filter_col=request.args.get('filter_col'), filter_val=request.args.get('filter_val')) }}" class="btn-secondary">Previous</a>
-      {% endif %}
-      <span>Page {{ current_page }} of {{ total_pages }}</span>
-      {% if current_page < total_pages %}
-        <a href="{{ url_for('dashboard', page=current_page+1, filter_col=request.args.get('filter_col'), filter_val=request.args.get('filter_val')) }}" class="btn-primary">Next</a>
-      {% endif %}
+        <!-- Pagination Controls -->
+        <!-- Pagination Controls -->
+    <div class="pagination-controls">
+      <div class="pagination">
+        {% if current_page > 1 %}
+          <a href="{{ url_for('dashboard', page=current_page-1, filter_col=request.args.get('filter_col'), filter_val=request.args.get('filter_val')) }}" 
+            class="btn-secondary" 
+            title="Go to previous page" 
+            aria-label="Previous Page">Previous</a>
+        {% endif %}
+
+        <span class="page-info">Page {{ current_page }} of {{ total_pages }}</span>
+
+        {% if current_page < total_pages %}
+          <a href="{{ url_for('dashboard', page=current_page+1, filter_col=request.args.get('filter_col'), filter_val=request.args.get('filter_val')) }}" 
+            class="btn-primary" 
+            title="Go to next page" 
+            aria-label="Next Page">Next</a>
+        {% endif %}
+      </div>
     </div>
+
+    <!-- Download Selected Button -->
+    <button id="downloadSelected" class="btn-primary">Download Selected Products</button>
+
   
     <hr>
   
-    <!-- Download Selected Button -->
-    <button id="downloadSelected" class="btn-primary">Download Selected Products</button>
+    
   </div>
 
   <script>
