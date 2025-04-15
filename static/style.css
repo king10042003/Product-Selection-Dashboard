@@ -208,3 +208,22 @@ li:hover {
   color: #333;
 }
 
+#ag-summary-panel {
+  min-width: 220px;
+  background-color: #fffdf9;
+  border: 2px dashed #333;
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+#ag-summary-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+#ag-summary-list li {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}

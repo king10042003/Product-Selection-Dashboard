@@ -25,7 +25,7 @@ def create_sample_csv():
     if not os.path.exists(SAMPLE_CSV_PATH):
         with open(SAMPLE_CSV_PATH, mode="w", newline="") as file:
             writer = csv.writer(file)
-            writer.writerow(["Item Code", "Lot Number", "Unit Weight", "Complexity Code", "Product Group", "Stock Value", "Product Category Description"])
+            writer.writerow(["Item Code", "AG", "Unit Weight", "Complexity Code", "Product Group", "Stock Value", "Product Category Description"])
             writer.writerow(["P0012345", "L001", "10", "High", "Group A", "500", "Category 1"])
             writer.writerow(["P0026789", "L002", "20", "Medium", "Group B", "700", "Category 2"])
 
@@ -74,6 +74,8 @@ def dashboard():
     # Filter parameters from request
     filter_col = request.args.get("filter_col")
     filter_val = request.args.get("filter_val")  # This will be a comma-separated string
+
+    # Apply filter
     if filter_col and filter_val:
         filter_col = filter_col.strip()
         filter_values = [val.strip() for val in filter_val.split(",")]
@@ -88,13 +90,17 @@ def dashboard():
             lambda x: f"https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName={x[2:9]}.jpg"
         )
 
+    # AG Summary Logic
+    ag_summary = df['AG'].value_counts().reset_index()
+    ag_summary.columns = ['AG', 'Count']
+
     total_pages = (len(df) + per_page - 1) // per_page
     paginated_data = df.iloc[(page - 1) * per_page: page * per_page].to_dict(orient="records")
 
     # Retrieve previously selected items (list of Item Codes)
     selected_items = session.get("selected_items", [])
 
-    # Get available columns for filtering (excluding 'IMAGE' and 'Sno.')
+    # Get available columns for filtering (excluding 'IMAGE' and 'Sno.'))
     column_data = [col for col in df.columns if col not in ["IMAGE", "Sno."]]
 
     return render_template("dashboard.html", 
@@ -102,7 +108,8 @@ def dashboard():
                            total_pages=total_pages, 
                            current_page=page, 
                            selected_items=selected_items,
-                           column_data=column_data)
+                           column_data=column_data,
+                           ag_summary=ag_summary)  # Pass the AG Summary data
 
 
 
