@@ -21,8 +21,7 @@
         </select>
   
         <div id="filter-options-container" class="mt-2">
-          <input type="text" id="filter-search" placeholder="Search for options..." oninput="filterValueOptions()" />
-
+          <input type="text" id="filter-search" placeholder="Search values..." class="mb-2" oninput="filterValueOptions()" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
         
           <div id="filter-options" style="max-height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 5px; border-radius: 4px;">
             <!-- Checkboxes will be dynamically inserted here -->
@@ -33,12 +32,13 @@
           
           <button onclick="clearFilter()" class="btn-secondary mt-2">Clear Filter</button>
         </div>
-  
-      <div class="right-panel">
-        <h2>Selected Products</h2>
-        <p id="selected-count">0</p>
-      </div>
     </div>
+  
+    <div class="right-panel">
+      <h2>Selected Products</h2>
+      <p id="selected-count">0</p>
+    </div>
+    
   
     <hr class="my-4">
   
@@ -174,33 +174,34 @@
       function loadFilterOptions() {
         const selectedColumn = columnDropdown.value;
         if (!selectedColumn) return;
-  
+
         console.log("Fetching unique values for column:", selectedColumn);
-  
+
         fetch(`/get_unique_values?column=${encodeURIComponent(selectedColumn)}`)
           .then(res => res.json())
           .then(data => {
-            filterOptionsContainer.innerHTML = "";
-  
+            const checkboxContainer = document.getElementById("filter-options");
+            checkboxContainer.innerHTML = "";  // ✅ only clear checkboxes
+
             if (data.values.length > 0) {
               data.values.forEach((value, i) => {
                 const wrapper = document.createElement("div");
                 wrapper.className = 'checkbox-wrapper';
-  
+
                 const checkbox = document.createElement("input");
                 checkbox.type = "checkbox";
                 checkbox.id = `filter-val-${i}`;
                 checkbox.value = value;
                 checkbox.name = selectedColumn;
                 checkbox.addEventListener("change", toggleApplyFilterButton);
-  
+
                 const label = document.createElement("label");
                 label.htmlFor = checkbox.id;
                 label.textContent = value;
-  
+
                 wrapper.appendChild(checkbox);
                 wrapper.appendChild(label);
-                filterOptionsContainer.appendChild(wrapper);
+                checkboxContainer.appendChild(wrapper);
               });
             } else {
               console.log("No values found for the selected column.");
@@ -208,6 +209,7 @@
           })
           .catch(err => console.error("Error fetching unique values:", err));
       }
+
   
       function toggleApplyFilterButton() {
         const checkboxes = filterOptionsContainer.querySelectorAll("input[type='checkbox']");
