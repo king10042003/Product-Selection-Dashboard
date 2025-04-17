@@ -1,8 +1,5 @@
+/* Import PaperCSS */
 @import url("https://unpkg.com/papercss@1.9.2/dist/paper.css") layer(csspaper);
-
-.card-list:has(li:hover) li:not(:hover) {
-  filter: blur(4px);
-}
 
 /* Demo style */
 body {
@@ -11,12 +8,11 @@ body {
   background-size: 20px 20px;
   background-image: repeating-linear-gradient(0deg, #e5decf, #e5decf 1px, #f6eee3 1px, #f6eee3);
   padding: 5rem;
-  color: var(--text-color);
 }
 
 h1 {
   font-size: 2.2rem;
-  color: var(--primary-color);
+  color: #0074D9;
   margin: 0 0 2rem;
 }
 
@@ -25,35 +21,43 @@ h2 {
   margin: 0;
 }
 
+/* Card List */
 .card-list {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
   margin: 0;
-  padding: 2rem; /* Fixed the extra space */
+  padding: 2rem;
+}
+
+.card-list li {
+  margin: 10px;
+  transition: all 150ms ease-in-out;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  background-color: #fffdf9;
 }
 
 .card-list li input[type="checkbox"] {
-    pointer-events: auto;
-    position: relative;
-    z-index: 10;
+  pointer-events: auto;
+  position: relative;
+  z-index: 10;
 }
 
-li {
-  margin: 10px;
-  transition: all 150ms ease-in-out;
-  border: 1px solid;
-  padding: 1rem;
+/* Hover effects */
+.card-list li:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
 }
 
-
-li::before {
-  content: "";
+/* Hover effect using JS */
+.card-list.hover-active li:not(.hovered) {
+  filter: blur(4px);
+  transition: filter 0.2s ease-in-out;
 }
 
 img {
   display: block;
-  min-width: 0;
   width: 100%;
   margin-bottom: .6rem;
 }
@@ -62,6 +66,7 @@ a {
   background: none;
 }
 
+/* Paper styling */
 .paper {
   padding: 1.5rem;
 }
@@ -70,12 +75,7 @@ li a {
   padding-inline-start: 1rem;
 }
 
-/* Blur effect using JS */
-.card-list.hover-active li:not(.hovered) {
-  filter: blur(4px);
-  transition: filter 0.2s ease-in-out;
-}
-
+/* Right panel */
 .right-panel {
   border: 2px dashed #333;
   padding: 1rem;
@@ -85,8 +85,9 @@ li a {
   text-align: center;
   font-size: 1rem;
   margin-bottom: 1.5rem;
-  flex: 0 0 220px; /* fixed width */
+  flex: 0 0 220px; 
 }
+
 #selected-count {
   font-size: 2rem;
   font-weight: bold;
@@ -108,8 +109,8 @@ li a {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   max-width: 500px;
   flex: 1;
-
 }
+
 #filter-section label {
   display: block;
   font-weight: bold;
@@ -117,6 +118,7 @@ li a {
   margin-bottom: 0.3rem;
 }
 
+/* Buttons */
 .btn-primary {
   background-color: #0074D9;
   color: white;
@@ -126,27 +128,29 @@ li a {
   border-radius: 4px;
   cursor: pointer;
   margin: 2rem auto;
-  display: block; /* <-- This centers it with auto margin */
+  display: block;
 }
-
 
 .btn-primary:hover {
   background-color: #005fa3;
+  border-color: #005fa3;
 }
 
 .btn-secondary {
   background-color: #DDDDDD;
   color: #333;
-  border: 1px solid #aaa;
+  border: 1px solid #ccc;
   padding: 0.4rem 1rem;
   font-weight: normal;
   border-radius: 4px;
   cursor: pointer;
 }
+
 .btn-secondary:hover {
   background-color: #ccc;
 }
 
+/* Form */
 form {
   margin-top: 1rem;
   margin-bottom: 1.5rem;
@@ -156,14 +160,17 @@ a.btn-secondary {
   display: inline-block;
   margin-top: 0.5rem;
 }
+
+/* Dashboard Header */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   gap: 2rem;
   align-items: flex-start;
-  flex-wrap: wrap; /* Mobile-friendly */
+  flex-wrap: wrap;
 }
 
+/* Checkbox wrapper */
 .checkbox-wrapper {
   display: flex;
   align-items: center;
@@ -171,24 +178,25 @@ a.btn-secondary {
   margin-bottom: 5px;
 }
 
-
+/* Media Queries */
 @media (max-width: 768px) {
   .card-list {
     padding: 1rem;
     grid-template-columns: 1fr 1fr;
   }
+
+  .right-panel {
+    flex: 1 1 auto;
+  }
 }
+
 @media (max-width: 480px) {
   .card-list {
     grid-template-columns: 1fr;
   }
 }
 
-li:hover {
-  transform: scale(1.02);
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-}
-
+/* Pagination */
 .pagination-controls {
   display: flex;
   justify-content: center;
@@ -208,14 +216,15 @@ li:hover {
   color: #333;
 }
 
+/* AG Summary Panel */
 #ag-summary-panel {
   display: none;
   position: fixed;
   top: 20px;
   right: 20px;
   width: 500px;
-  max-height: 80vh; /* Set max height relative to viewport */
-  overflow-y: auto;  /* Enable vertical scrolling if content overflows */
+  max-height: 80vh;
+  overflow-y: auto;
   background-color: white;
   border: 2px solid #ccc;
   padding: 10px;
@@ -226,11 +235,11 @@ li:hover {
 #ag-summary-panel.visible {
   display: block;
   opacity: 1;
-  pointer-events: auto;  /* Show the panel when the 'visible' class is added */
+  pointer-events: auto;
 }
 
 #ag-summary-panel button {
-  margin-top: 10px;  /* Space the button out a bit */
+  margin-top: 10px;
 }
 
 #ag-summary-table {
@@ -246,23 +255,24 @@ li:hover {
   text-align: left;
 }
 
-/* Make the summary table break into multiple pages */
 @media print {
+  .btn-primary, .btn-secondary {
+    display: none;
+  }
+
   #ag-summary-panel {
     max-height: none;
     overflow: visible;
   }
-  
+
   #ag-summary-table {
     page-break-before: always;
   }
-  
+
   #ag-summary-table tr {
     page-break-inside: avoid;
   }
 }
-
-
 
 .page-container {
   page-break-before: always;
@@ -270,4 +280,11 @@ li:hover {
 
 .page-break {
   page-break-before: always;
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .card-list li {
+    transition: none;
+  }
 }
