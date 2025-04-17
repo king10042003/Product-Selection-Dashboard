@@ -209,21 +209,65 @@ li:hover {
 }
 
 #ag-summary-panel {
-  min-width: 220px;
-  background-color: #fffdf9;
-  border: 2px dashed #333;
-  padding: 1rem;
-  border-radius: 6px;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+  display: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 500px;
+  max-height: 80vh; /* Set max height relative to viewport */
+  overflow-y: auto;  /* Enable vertical scrolling if content overflows */
+  background-color: white;
+  border: 2px solid #ccc;
+  padding: 10px;
+  z-index: 9999;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-#ag-summary-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 1rem;
+#ag-summary-panel.visible {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;  /* Show the panel when the 'visible' class is added */
 }
 
-#ag-summary-list li {
-  font-size: 0.95rem;
-  margin-bottom: 0.5rem;
+#ag-summary-panel button {
+  margin-top: 10px;  /* Space the button out a bit */
+}
+
+#ag-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+#ag-summary-table td,
+#ag-summary-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+/* Make the summary table break into multiple pages */
+@media print {
+  #ag-summary-panel {
+    max-height: none;
+    overflow: visible;
+  }
+  
+  #ag-summary-table {
+    page-break-before: always;
+  }
+  
+  #ag-summary-table tr {
+    page-break-inside: avoid;
+  }
+}
+
+
+
+.page-container {
+  page-break-before: always;
+}
+
+.page-break {
+  page-break-before: always;
 }

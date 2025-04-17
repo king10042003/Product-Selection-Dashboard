@@ -1,6 +1,8 @@
-Item Code,AG,Unit Weight,Complexity Code,Product Group,Stock Value,Product Category Description,IMAGE
-51W3BHDKYABA00,T434EDB,56,High,Rings,10000,Necklace,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHDKY.jpg
-51W3BHDLCABA00,T434EDO,39.52,High,Rings,10000,Ring,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHDLC.jpg
-51W3BHDLDABA00,T434EMU,39.72,High,Rings,10000,Ring,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHDLD.jpg
-51W3BHNHY1AA00,W2A2EHW,53.17,High,Rings,10000,Ring,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHNHY.jpg
-51W3BHNHZ1AA00,W2A2EJX,39.08,High,Rings,10000,Ring,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=W3BHNHZ.jpg
+Item Code,AG,Unit Weight,Complexity,Product Group,Stock Value,Product Category Description,IMAGE
+500005FGAOAA04,EVERYDAYS|GOLD STUDDED|FINGER RING|B(25-50)|DT|_|_,3.08,,Group B,28433,Category 2,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0005FGA.jpg
+500005FGALAA02,EVERYDAYS|GOLD STUDDED|FINGER RING|B(25-50)|DT|_|_,3.08,,Group B,25760,Category 5,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0005FGA.jpg
+500005FIANAA02,EVERYDAYS|GOLD STUDDED|FINGER RING|B(25-50)|DT|_|_,2.58,3,Group B,31106,Category 8,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0005FIA.jpg
+500005SPAAAB09,EVERYDAYS|GOLD STUDDED|EAR RING|A(0-25)|STUD|DT|_,1.81,3,Group B,23336,Category 43,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0005SPA.jpg
+500029NOAAAC09,OCCASION|HV STUDDED|SET2|1-3L|ELEGANCE|_,8.26,1,Group B,163914,Category 67,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0029NOA.jpg
+500029NOAAAC04,OCCASION|HV STUDDED|SET2|1-3L|ELEGANCE|_,7.85,1,Group B,204611,Category 68,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0029NOA.jpg
+501055NHAAAB04,OCCASION|HV STUDDED|SET2|1-3L|ELEGANCE|_,6.57,3,Group B,88265,Category 2366,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=1055NHA.jpg
