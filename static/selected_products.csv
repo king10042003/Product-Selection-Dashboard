@@ -1,8 +1,6 @@
-Item Code,AG,Unit Weight,Complexity,Product Group,Stock Value,Product Category Description,IMAGE
-500005FGAOAA04,EVERYDAYS|GOLD STUDDED|FINGER RING|B(25-50)|DT|_|_,3.08,,Group B,28433,Category 2,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0005FGA.jpg
-500005FGALAA02,EVERYDAYS|GOLD STUDDED|FINGER RING|B(25-50)|DT|_|_,3.08,,Group B,25760,Category 5,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0005FGA.jpg
-500005FIANAA02,EVERYDAYS|GOLD STUDDED|FINGER RING|B(25-50)|DT|_|_,2.58,3,Group B,31106,Category 8,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0005FIA.jpg
-500005SPAAAB09,EVERYDAYS|GOLD STUDDED|EAR RING|A(0-25)|STUD|DT|_,1.81,3,Group B,23336,Category 43,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0005SPA.jpg
-500029NOAAAC09,OCCASION|HV STUDDED|SET2|1-3L|ELEGANCE|_,8.26,1,Group B,163914,Category 67,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0029NOA.jpg
-500029NOAAAC04,OCCASION|HV STUDDED|SET2|1-3L|ELEGANCE|_,7.85,1,Group B,204611,Category 68,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0029NOA.jpg
-501055NHAAAB04,OCCASION|HV STUDDED|SET2|1-3L|ELEGANCE|_,6.57,3,Group B,88265,Category 2366,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=1055NHA.jpg
+Item Code,AG,Unit Weight,Complexity,Product Group,Stock Value,Product Category Description,IMAGE,Status
+500005FGAOAA04,EVERYDAYS|GOLD STUDDED|FINGER RING|B(25-50)|DT|_|_,3.08,,Group B,28433,Category 2,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0005FGA.jpg,MTAR
+500005FIAMAA02,EVERYDAYS|GOLD STUDDED|FINGER RING|B(25-50)|DT|_|_,2.44,3,Group B,30209,Category 9,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0005FIA.jpg,R-NPI
+500005FWAHAA09,ENGAGEMENT|DIAMOND|FINGER RING|A(0-50)K|LADIES|_|_,2.15,2,Group B,24137,Category 23,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0005FWA.jpg,IN-ACTIVE
+500009SXAABA12,EVERYDAYS|COLOUR STONES|EAR RING|A|_|_|_,4.16,,Group B,42107,Category 47,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0009SXA.jpg,R-NPI
+500021SAAABA13,EVERYDAYS|COLOUR STONES|EAR RING|A|_|_|_,5.11,,Group B,41651,Category 65,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0021SAA.jpg,MTAR

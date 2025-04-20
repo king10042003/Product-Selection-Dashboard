@@ -102,6 +102,9 @@ def dashboard():
 
     # Get selected items from session
     selected_items = session.get("selected_items", [])
+    
+    # Get dropdown statuses from session
+    dropdown_status = session.get("dropdown_status", {})
 
     # Filtered DataFrame for viewing
     df = full_df.copy()
@@ -122,6 +125,12 @@ def dashboard():
     paginated_data = paginated_df.to_dict(orient="records")
     for item in paginated_data:
         item["is_selected"] = item.get("Item Code") in selected_items
+        # Add status from session if available
+        item_code = item.get("Item Code")
+        if item_code in dropdown_status:
+            item["status"] = dropdown_status[item_code]
+        else:
+            item["status"] = "none"
 
     selected_items_all_pages = []
 
@@ -151,7 +160,8 @@ def dashboard():
         current_page=page,
         selected_items=selected_items,
         column_data=column_data,
-        ag_summary=ag_summary
+        ag_summary=ag_summary,
+        dropdown_status=dropdown_status  # Pass dropdown statuses to template
     )
 
 
@@ -159,9 +169,7 @@ def dashboard():
 
 
 
-
-
-
+# Route: Download Sample CSV
 @app.route("/download_sample")
 def download_sample():
     return send_file(SAMPLE_CSV_PATH, as_attachment=True)
@@ -179,6 +187,7 @@ def save_selection():
         return jsonify({"error": str(e)}), 400
 
 # Route: Download Selected Products CSV (exports all selected rows)
+# Modify the download_selected route to include status values
 @app.route("/download_selected")
 def download_selected():
     # Generate the image URL based on the item code
@@ -205,6 +214,9 @@ def download_selected():
     selected_items = session.get("selected_items", [])
     file_path = session.get("uploaded_file")
     
+    # Get dropdown statuses from session
+    dropdown_status = session.get("dropdown_status", {})
+    
     # Check if there are selected items and if the file path is valid
     if not selected_items or not file_path:
         return "No items selected or file path missing", 400
@@ -223,7 +235,10 @@ def download_selected():
         
         # Add the "IMAGE" column by applying the generate_image_url function
         df["IMAGE"] = df["Item Code"].apply(generate_image_url)
-        
+
+        # Add a "Status" column to store the dropdown status for each item
+        df["Status"] = df["Item Code"].apply(lambda x: dropdown_status.get(x, "none"))
+
         # Filter the selected items
         selected_df = df[df["Item Code"].isin(selected_items)]
         
@@ -239,8 +254,9 @@ def download_selected():
     
     except Exception as e:
         return f"An error occurred: {str(e)}", 500
-    
 
+
+# Route: Download All Products CSV (exports all rows)
 
 @app.route("/get_unique_values")
 def get_unique_values():
@@ -306,7 +322,30 @@ def get_selected_ag_data():
     except Exception as e:
         return jsonify({"error": str(e)}),
 
-
+# Add this new route to save status dropdown values
+@app.route("/save_status", methods=["POST"])
+def save_status():
+    try:
+        data = request.json
+        if not data or 'item_code' not in data or 'status' not in data:
+            return jsonify({"error": "Missing required data"}), 400
+        
+        item_code = data['item_code']
+        status = data['status']
+        
+        # Initialize or get existing dropdown statuses from session
+        dropdown_status = session.get("dropdown_status", {})
+        
+        # Update the status for this item
+        dropdown_status[item_code] = status
+        
+        # Save back to session
+        session["dropdown_status"] = dropdown_status
+        session.modified = True
+        
+        return jsonify({"message": f"Status for item {item_code} updated to {status}"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 if __name__ == "__main__":
     app.run(debug=True)
