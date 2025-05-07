@@ -300,3 +300,57 @@ a.btn-secondary {
   display: flex;
   align-items: center;
 }
+
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #ccc;
+}
+
+.filter-form label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.filter-form select,
+.filter-form input[type="submit"],
+.filter-form a {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.filter-form select[multiple] {
+  height: auto;
+  min-height: 150px;
+  width: 200px;
+}
+
+.filter-form input[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.filter-form input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.filter-form a {
+  color: #dc3545;
+  text-decoration: none;
+  margin-top: 1.9rem;
+  display: inline-block;
+}
+
+.filter-form a:hover {
+  text-decoration: underline;
+}

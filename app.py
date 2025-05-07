@@ -320,7 +320,8 @@ def get_selected_ag_data():
             return jsonify({"ag_counts": {}, "item_to_ag": {}})
 
     except Exception as e:
-        return jsonify({"error": str(e)}),
+        return jsonify({"error": str(e)})
+
 
 # Add this new route to save status dropdown values
 @app.route("/save_status", methods=["POST"])
