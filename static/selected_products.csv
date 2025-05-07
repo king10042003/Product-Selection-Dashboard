@@ -1,6 +1,4 @@
-Item Code,AG,Unit Weight,Complexity,Product Group,Stock Value,Product Category Description,IMAGE,Status
-500005FGAOAA04,EVERYDAYS|GOLD STUDDED|FINGER RING|B(25-50)|DT|_|_,3.08,,Group B,28433,Category 2,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0005FGA.jpg,MTAR
-500005FIAMAA02,EVERYDAYS|GOLD STUDDED|FINGER RING|B(25-50)|DT|_|_,2.44,3,Group B,30209,Category 9,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0005FIA.jpg,R-NPI
-500005FWAHAA09,ENGAGEMENT|DIAMOND|FINGER RING|A(0-50)K|LADIES|_|_,2.15,2,Group B,24137,Category 23,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0005FWA.jpg,IN-ACTIVE
-500009SXAABA12,EVERYDAYS|COLOUR STONES|EAR RING|A|_|_|_,4.16,,Group B,42107,Category 47,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0009SXA.jpg,R-NPI
-500021SAAABA13,EVERYDAYS|COLOUR STONES|EAR RING|A|_|_|_,5.11,,Group B,41651,Category 65,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0021SAA.jpg,MTAR
+Item Code,AG,Unit Weight,Complexity Code,Product Group,Stock Value,Product Category Description,IMAGE,Status
+510228VEAQ2A00,EVERYDAYS|GOLD PLAIN|BANGLE|A(0-34)|BOMBAY|ALL OTHER|X2,20.18,Low,5,172720.62,Category 40,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=0228VEA.jpg,MTAR
+511052VJNS4B00,EVERYDAYS|GOLD PLAIN|BANGLE|A(0-34)|BOMBAY|ALL OTHER|X2,54.38,Low,,471385.54,Category 210,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=1052VJN.jpg,MTAR
+51D2A2VPDS2A00,EVERYDAYS|GOLD PLAIN|BANGLE|A(0-34)|BOMBAY|ALL OTHER|X2,30.28,Low,,259149.4,Category 4727,https://jewbridge.titanjew.in/CatalogImages/api/ImageFetch/?Type=ProductImages&ImageName=D2A2VPD.jpg,S-NPI
