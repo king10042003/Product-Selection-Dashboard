@@ -4,7 +4,7 @@ An interactive and dynamic web dashboard built using **Flask**, **Python**, **HT
 
 ---
 
-![Dashboard Preview](templates/Screenshot 2025-06-02 154432.png)
+![Dashboard Preview](templates/Screenshot%202025-06-02%20154432.png)
 
 > *Above: Sample view of the Product Selection Dashboard with filters and hover effects.*
 
